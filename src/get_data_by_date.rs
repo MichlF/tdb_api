@@ -4,6 +4,16 @@ use actix_web::{web, HttpResponse, Responder};
 use std::sync::{Arc, Mutex};
 use tokio_postgres::Client;
 
+/// This function queries the database for posts within a specified date range and returns them as an HTTP response.
+///
+/// # Arguments
+///
+/// * `client` - An Actix `Data` object holding a shared reference to a PostgreSQL `Client` instance wrapped in an `Arc<Mutex>`.
+/// * `query` - An Actix `Query` object holding a `DateTimeRangeQuery` struct containing the start and end dates of the desired date range.
+///
+/// # Returns
+///
+/// An `HttpResponse` containing a list of posts as a string in the HTTP response body, or a `BadRequest` response if there was an error parsing the date parameters or if no data is available for the specified date range.
 pub async fn get_data_by_date(
     client: web::Data<Arc<Mutex<Client>>>,
     query: web::Query<DateTimeRangeQuery>,
@@ -18,7 +28,7 @@ pub async fn get_data_by_date(
                 return HttpResponse::BadRequest()
                     .body("An error occurred while parsing the start date.");
             }
-        }
+        },
     };
     let end_date = match chrono::NaiveDate::parse_from_str(&query_params.end, "%d-%m-%Y") {
         Ok(date) => date,
@@ -27,7 +37,7 @@ pub async fn get_data_by_date(
                 return HttpResponse::BadRequest()
                     .body("An error occurred while parsing the end date.");
             }
-        }
+        },
     };
 
     // Convert the start and end dates to UNIX timestamps

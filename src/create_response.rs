@@ -1,3 +1,15 @@
+use crate::data_structs::ApiResponse;
+use serde_json;
+
+/// Creates an instance of ApiResponse and returns its JSON representation as a string
+///
+/// # Arguments
+///
+/// * `row` - A tokio_postgres::Row containing the values to populate the ApiResponse struct
+///
+/// # Returns
+///
+/// * A JSON string representation of the ApiResponse struct
 pub fn create_response(row: tokio_postgres::Row) -> String {
     // Define the variables
     let id: i32 = row.get(0);
@@ -17,6 +29,19 @@ pub fn create_response(row: tokio_postgres::Row) -> String {
     );
     let date = date_time.format("%d-%m-%Y, %H:%M").to_string();
 
-    // Define the API response
-    format!("Post ID: {}, from {} with reddit-url {} in subreddit {} with title {} by author {} contains the url {} with a sentiment score of {}\n Here is the text/content: {}", id, date, url, subreddit, title, author, url_contained, sentiment, content)
+    // Create an instance of ApiResponse to return a JSON representation
+    let api_response = ApiResponse {
+        id,
+        date,
+        url,
+        subreddit,
+        title,
+        author,
+        url_contained,
+        sentiment,
+        content,
+    };
+
+    // Convert the ApiResponse struct to a JSON string using serde_json::to_string
+    serde_json::to_string(&api_response).unwrap()
 }
