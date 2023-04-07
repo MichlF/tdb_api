@@ -3,11 +3,11 @@ use std::sync::{Arc, Mutex};
 use tokio_postgres::NoTls;
 
 mod create_response;
-mod data_structs;
 mod get_all_data;
 mod get_data_by_date;
 mod get_data_by_sentiment_threshold;
 mod index;
+mod models;
 
 /// Starts the actix-web server that serves HTTP requests for the sentiment analysis data.
 ///
@@ -88,7 +88,7 @@ async fn main() -> std::io::Result<()> {
                 web::get().to(get_data_by_date::get_data_by_date),
             )
     })
-    .bind("127.0.0.1:8080")?
+    .bind("localhost:8080")?
     .run()
     .await
 }

@@ -1,5 +1,5 @@
 use crate::create_response::create_response;
-use crate::data_structs::DateTimeRangeQuery;
+use crate::models::DateTimeRangeQuery;
 use actix_web::{web, HttpResponse, Responder};
 use std::sync::{Arc, Mutex};
 use tokio_postgres::Client;

@@ -1,4 +1,4 @@
-use crate::data_structs::ApiResponse;
+use crate::models::ApiResponse;
 use serde_json;
 
 /// Creates an instance of ApiResponse and returns its JSON representation as a string
